@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Отслеживание изменения размера окна</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Текущие размеры окна:</h1>
+    <p id="size"></p>
+
+    <script>
+      function debounce(func, wait, immediate) {
+        var timeout;
+        return function () {
+          var context = this,
+            args = arguments;
+          var later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      }
+
+      function getSize() {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        document.getElementById("size").textContent = width + "×" + height;
+      }
+
+      var debouncedGetSize = debounce(getSize, 100);
+
+      window.addEventListener("resize", debouncedGetSize);
+    </script>
+  </body>
+</html>
